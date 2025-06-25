@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: url(https://cur.cursors-4u.net/nature/nat-4/nat368.cur), auto !important;
+            cursor: url(http://www.rw-designer.com/cursor-extern.php?id=170211), auto !important;
         }
 
         body {
@@ -591,6 +591,7 @@
                 category: ["painting"],
                 project: "Abstraction Triptych",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Define what constitutes your personal visual culture",
                     "Collect images that represent your visual environment",
@@ -628,6 +629,7 @@
                 category: ["drawing", "digital"],
                 project: "Creative Narrative Comic",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Identify a story theme that genuinely matters to you",
                     "Develop main character with clear personality and motivation",
@@ -667,6 +669,7 @@
                 category: ["sculpture"],
                 project: "3D Character Sculptures",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Brainstorm original character concept with unique personality",
                     "Develop character backstory to inform visual design",
@@ -708,6 +711,7 @@
                 category: ["sculpture", "mixed-media"],
                 project: "Story Quilts to 3D Forms",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Choose a story with personal significance and visual potential",
                     "Identify key narrative elements that can be represented visually",
@@ -749,6 +753,7 @@
                 category: ["digital"],
                 project: "Portfolio + Exhibition",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Review all work created throughout the course",
                     "Identify strongest pieces that show growth and skill",
@@ -898,6 +903,9 @@
 
         function filterUnits(searchTerm, categoryFilter) {
             let filteredUnits = unitsData;
+
+            // Filter out hidden units first
+            filteredUnits = filteredUnits.filter(unit => !unit.hidden);
 
             // Filter by category
             if (categoryFilter !== 'all') {
