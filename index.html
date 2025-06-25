@@ -316,6 +316,10 @@
             transform: rotate(180deg);
         }
 
+        .hidden-unit {
+            display: none !important;
+        }
+
         .tips-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -473,13 +477,15 @@
             {
                 number: 1,
                 title: "Identity & Rebellion",
-                duration: "Steps",
+                duration: "4 class periods",
                 prompt: "Rebel against something in your world that affects who you get to be",
                 category: ["mixed-media", "drawing"],
                 project: "Punk-Inspired Poster",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: false, // Set to true to hide this unit
                 steps: [
                     "Research punk aesthetic movements and visual language",
+                    "Study Russian constructivism design principles",
                     "Investigate nonconformist art movements throughout history",
                     "Collect visual references that resonate with your rebellion theme",
                     "Experiment with basic collage techniques using found materials",
@@ -496,7 +502,7 @@
                     "Complete final poster with professional finishing"
                 ],
                 skills: ["Mixed Media", "Collage", "Value Relationships", "Typography", "DIY Aesthetics"],
-                assessment: "Poster (100pts) + Practice Collages (50pts) + Reflection (50pts)",
+                assessment: "Poster (100pts) + Process (100pts)",
                 resources: [
                     {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
                     {type: "video", title: "Collage Techniques Tutorial", url: "#", icon: "🎥"},
@@ -507,11 +513,12 @@
             {
                 number: "1.5",
                 title: "Advanced Visual Research",
-                duration: "Steps",
+                duration: "1 class period",
                 prompt: "Investigate an artist whose work connects to your creative interests",
                 category: ["digital"],
                 project: "Artist Investigation",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Select an artist whose work genuinely interests you",
                     "Research the artist's background and formative experiences",
@@ -519,7 +526,7 @@
                     "Analyze their artistic techniques and materials",
                     "Investigate their artistic lineage and contemporaries",
                     "Examine connections to current contemporary practice",
-                    "Create your Artist Research Spread",
+                    "Organize research findings into clear categories",
                     "Create visual presentation layout",
                     "Write compelling analysis connecting their work to yours",
                     "Present findings to class with confidence"
@@ -535,11 +542,12 @@
             {
                 number: 2,
                 title: "Human Form + Surrealism",
-                duration: "Steps",
+                duration: "6 class periods",
                 prompt: "Combine observational drawing of the human form with surreal transformation",
                 category: ["drawing", "painting"],
                 project: "Surrealist Figure Drawing",
                 projectBrief: "#", // Link to project brief PDF
+                hidden: true, // Set to true to hide this unit
                 steps: [
                     "Practice rapid gesture drawing to capture movement and energy",
                     "Master basic proportional relationships of the human figure",
@@ -799,6 +807,11 @@
             const card = document.createElement('div');
             card.className = 'unit-card expandable';
             card.dataset.categories = unit.category.join(' ');
+            
+            // Add hidden class if unit is marked as hidden
+            if (unit.hidden) {
+                card.classList.add('hidden-unit');
+            }
             
             card.innerHTML = `
                 <div class="unit-header">
