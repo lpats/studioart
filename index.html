@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Art 11th Grade - Interactive Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .header p {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .unit-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .unit-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .unit-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .unit-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .unit-duration {
+            background: #f8f9fa;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .unit-prompt {
+            font-style: italic;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .unit-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .unit-details.expanded {
+            display: block;
+        }
+
+        .week-breakdown {
+            margin-bottom: 20px;
+        }
+
+        .week-item {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .resources-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 10px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .resource-item:hover {
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .resource-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            opacity: 0.7;
+        }
+
+        .resource-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        .assessment-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .grade-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grade-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .grade-percentage {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .expandable {
+            cursor: pointer;
+        }
+
+        .expand-icon {
+            float: right;
+            transition: transform 0.3s ease;
+        }
+
+        .expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .tips-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .tip-category {
+            margin-bottom: 25px;
+        }
+
+        .tip-category h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .tip-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .units-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                justify-content: center;
+            }
+            
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Studio Art 11th Grade</h1>
+            <p>Your Interactive Learning Database - Build Your Artistic Voice</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search units, skills, projects, or concepts..." id="searchInput">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Units</button>
+                <button class="filter-btn" data-filter="drawing">Drawing</button>
+                <button class="filter-btn" data-filter="painting">Painting</button>
+                <button class="filter-btn" data-filter="sculpture">Sculpture</button>
+                <button class="filter-btn" data-filter="digital">Digital</button>
+                <button class="filter-btn" data-filter="mixed-media">Mixed Media</button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="units">📚 Course Units</button>
+            <button class="tab-btn" data-tab="assessment">📊 Assessment</button>
+            <button class="tab-btn" data-tab="tips">💡 Success Tips</button>
+            <button class="tab-btn" data-tab="resources">🔗 Resources</button>
+        </div>
+
+        <div id="units" class="tab-content active">
+            <div class="units-grid" id="unitsGrid">
+                <!-- Units will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div id="assessment" class="tab-content">
+            <div class="assessment-card">
+                <h2>📊 How You'll Be Assessed</h2>
+                <div class="grade-breakdown">
+                    <div class="grade-item">
+                        <div class="grade-percentage">60%</div>
+                        <div>Major Projects</div>
+                        <small>700 points total</small>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-percentage">40%</div>
+                        <div>Process Work</div>
+                        <small>700 points total</small>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-percentage">200</div>
+                        <div>Supply Care</div>
+                        <small>per semester</small>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; text-align: center; font-size: 1.1rem;"><strong>Total per semester: 1,400 points</strong></p>
+            </div>
+        </div>
+
+        <div id="tips" class="tab-content">
+            <div class="tips-section">
+                <h2>💡 Success Tips</h2>
+                <div class="tip-category">
+                    <h3>For Major Projects</h3>
+                    <div class="tip-item">Start early and embrace the process - your best work comes from iteration</div>
+                    <div class="tip-item">Take creative risks - this is your time to experiment without fear</div>
+                    <div class="tip-item">Document everything: progress photos, sketches, and reflections</div>
+                    <div class="tip-item">Seek feedback during work time, not just at project completion</div>
+                </div>
+                <div class="tip-category">
+                    <h3>For Skill Building</h3>
+                    <div class="tip-item">Practice techniques outside of class when possible</div>
+                    <div class="tip-item">Study the artist exemplars provided with each unit</div>
+                    <div class="tip-item">Connect assignments to your personal interests and experiences</div>
+                    <div class="tip-item">Maintain a consistent sketchbook or digital idea journal</div>
+                </div>
+                <div class="tip-category">
+                    <h3>For Professional Growth</h3>
+                    <div class="tip-item">Care for supplies and maintain an organized workspace</div>
+                    <div class="tip-item">Meet deadlines consistently and communicate early if issues arise</div>
+                    <div class="tip-item">Participate actively in critiques - both giving and receiving feedback</div>
+                    <div class="tip-item">Begin building your portfolio mindset from day one</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resources" class="tab-content">
+            <div class="assessment-card">
+                <h2>🔗 Additional Resources</h2>
+                <p>Links to tutorials, exemplars, and supplementary materials will be added throughout the year.</p>
+                <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3>Coming Soon:</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Video tutorial library</li>
+                        <li>Student exemplar gallery</li>
+                        <li>Artist reference database</li>
+                        <li>Technique demonstration videos</li>
+                        <li>Digital portfolio templates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Course data
+        const unitsData = [
+            {
+                number: 1,
+                title: "Identity & Rebellion",
+                duration: "4 class periods",
+                prompt: "Rebel against something in your world that affects who you get to be",
+                category: ["mixed-media", "drawing"],
+                project: "Punk-Inspired Poster",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Research punk aesthetic movements and visual language",
+                    "Study Russian constructivism design principles",
+                    "Investigate nonconformist art movements throughout history",
+                    "Collect visual references that resonate with your rebellion theme",
+                    "Experiment with basic collage techniques using found materials",
+                    "Practice value studies using photocopies and manipulation",
+                    "Master fundamental value relationships in composition",
+                    "Create multiple small collage studies exploring different approaches",
+                    "Develop concept sketches for your poster design",
+                    "Plan composition and focal point placement",
+                    "Design typography that reinforces your message",
+                    "Create value studies to check visual hierarchy",
+                    "Gather final materials for poster construction",
+                    "Execute poster using refined mixed media techniques",
+                    "Refine details and typography integration",
+                    "Complete final poster with professional finishing"
+                ],
+                skills: ["Mixed Media", "Collage", "Value Relationships", "Typography", "DIY Aesthetics"],
+                assessment: "Poster (100pts) + Process (100pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Collage Techniques Tutorial", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "Student Poster Examples", url: "#", icon: "🖼️"},
+                    {type: "reference", title: "Punk Art Movement Research", url: "#", icon: "📚"}
+                ]
+            },
+            {
+                number: "1.5",
+                title: "Advanced Visual Research",
+                duration: "1 class period",
+                prompt: "Investigate an artist whose work connects to your creative interests",
+                category: ["digital"],
+                project: "Artist Investigation",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Select an artist whose work genuinely interests you",
+                    "Research the artist's background and formative experiences",
+                    "Identify key influences on their artistic development",
+                    "Analyze their artistic techniques and materials",
+                    "Investigate their artistic lineage and contemporaries",
+                    "Examine connections to current contemporary practice",
+                    "Organize research findings into clear categories",
+                    "Create visual presentation layout",
+                    "Write compelling analysis connecting their work to yours",
+                    "Present findings to class with confidence"
+                ],
+                skills: ["Research Methods", "Art Analysis", "Presentation Skills"],
+                assessment: "Artist Investigation (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "guide", title: "Research Methods Guide", url: "#", icon: "📋"},
+                    {type: "database", title: "Artist Database Access", url: "#", icon: "🔍"}
+                ]
+            },
+            {
+                number: 2,
+                title: "Human Form + Surrealism",
+                duration: "6 class periods",
+                prompt: "Combine observational drawing of the human form with surreal transformation",
+                category: ["drawing", "painting"],
+                project: "Surrealist Figure Drawing",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Practice rapid gesture drawing to capture movement and energy",
+                    "Master basic proportional relationships of the human figure",
+                    "Learn Chuck Close grid method for accurate observation",
+                    "Apply grid technique to facial feature studies",
+                    "Practice contour drawing for line sensitivity",
+                    "Set up photo shoot with classmates for reference material",
+                    "Photograph figures from multiple angles and lighting conditions",
+                    "Select strongest reference photos for further development",
+                    "Study facial anatomy and proportional relationships",
+                    "Practice systematic approach to facial feature rendering",
+                    "Explore expressive possibilities within accurate observation",
+                    "Master shading and form modeling techniques",
+                    "Research surrealist techniques: distortion, multiplication, transformation",
+                    "Study surrealist artists' approaches to the human form",
+                    "Experiment with surreal transformation techniques on practice drawings",
+                    "Combine observational accuracy with imaginative distortion",
+                    "Plan composition integrating realistic and surreal elements",
+                    "Create preliminary studies exploring different surreal approaches",
+                    "Select most successful concept for final development",
+                    "Execute final piece balancing observation and imagination",
+                    "Refine details and enhance surreal elements",
+                    "Photograph work professionally for portfolio documentation"
+                ],
+                skills: ["Grid Drawing", "Gesture Drawing", "Facial Proportions", "Figure Drawing", "Surrealist Techniques", "Photography", "Portfolio Development"],
+                assessment: "Surrealist Figure Work (100pts) + Process Portfolio (100pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Grid Drawing Tutorial", url: "#", icon: "🎥"},
+                    {type: "video", title: "Gesture Drawing Basics", url: "#", icon: "🎥"},
+                    {type: "video", title: "Surrealist Techniques", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "Chuck Close Method Examples", url: "#", icon: "🖼️"},
+                    {type: "reference", title: "Surrealist Figure Studies", url: "#", icon: "📚"}
+                ]
+            },
+            {
+                number: 3,
+                title: "Gouache + Visual Culture + Abstraction",
+                duration: "4 class periods",
+                prompt: "Transform something from your visual culture through abstraction",
+                category: ["painting"],
+                project: "Abstraction Triptych",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Define what constitutes your personal visual culture",
+                    "Collect images that represent your visual environment",
+                    "Analyze why certain images resonate with you",
+                    "Select one image for transformation process",
+                    "Learn gouache consistency and brush handling",
+                    "Practice color mixing and paint application",
+                    "Master gouache layering and opacity control",
+                    "Experiment with 'drawing with paint' approach",
+                    "Create realistic interpretation of your selected image",
+                    "Identify key visual elements to maintain through abstraction",
+                    "Simplify forms while retaining essential character",
+                    "Experiment with color relationships and composition",
+                    "Push abstraction further while maintaining visual connection",
+                    "Eliminate representational elements completely",
+                    "Focus on pure color, form, and composition relationships",
+                    "Refine all three panels for visual cohesion",
+                    "Set personal artistic goals based on this exploration",
+                    "Reflect on your abstraction process and discoveries"
+                ],
+                skills: ["Gouache Techniques", "Visual Culture Analysis", "Abstraction Progression", "Goal Development"],
+                assessment: "Triptych (100pts) + Analysis (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Gouache Painting Techniques", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "Abstraction Process Examples", url: "#", icon: "🖼️"},
+                    {type: "guide", title: "Visual Culture Analysis Guide", url: "#", icon: "📋"}
+                ]
+            },
+            {
+                number: 4,
+                title: "Visual Storytelling",
+                duration: "5 class periods",
+                prompt: "Tell a story that matters to you through visual narrative",
+                category: ["drawing", "digital"],
+                project: "Creative Narrative Comic",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Identify a story theme that genuinely matters to you",
+                    "Develop main character with clear personality and motivation",
+                    "Design supporting characters with distinct visual traits",
+                    "Create setting sketches that support your narrative",
+                    "Plan story arc with clear beginning, middle, and end",
+                    "Write basic script outlining key story beats",
+                    "Sketch thumbnail panels to plan page flow",
+                    "Determine panel sizes and compositions for pacing",
+                    "Plan dialogue placement and speech bubble integration",
+                    "Create detailed storyboard with refined compositions",
+                    "Learn panel transition techniques for smooth flow",
+                    "Study sequential art timing and pacing methods",
+                    "Master speech bubble and lettering integration",
+                    "Practice dynamic panel compositions and angles",
+                    "Create tight pencil layouts for final pages",
+                    "Ink or finalize line work with consistent style",
+                    "Add color or shading to enhance mood and atmosphere",
+                    "Test narrative flow by reading through complete sequence",
+                    "Make adjustments for clarity and visual impact",
+                    "Complete final comic with professional presentation"
+                ],
+                skills: ["Visual Storytelling", "Character Design", "Sequential Art", "Narrative Pacing", "Comic Techniques"],
+                assessment: "Comic (100pts) + Storyboard (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Character Design Fundamentals", url: "#", icon: "🎥"},
+                    {type: "video", title: "Sequential Art Techniques", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "Student Comic Examples", url: "#", icon: "🖼️"}
+                ]
+            },
+            {
+                number: 5,
+                title: "Paper Mache Character Heads",
+                duration: "4 class periods",
+                prompt: "Bring a character from your imagination into 3D reality",
+                category: ["sculpture"],
+                project: "3D Character Sculptures",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Brainstorm original character concept with unique personality",
+                    "Develop character backstory to inform visual design",
+                    "Consider how personality will translate to physical features",
+                    "Research similar characters for inspiration and differentiation",
+                    "Create front view character drawing with clear proportions",
+                    "Draw profile view maintaining consistent proportions",
+                    "Design three-quarter view to show dimensional relationships",
+                    "Plan color scheme and surface texture details",
+                    "Gather materials for armature construction",
+                    "Build wire or cardboard armature for basic head shape",
+                    "Test armature stability and make adjustments",
+                    "Prepare paper mache materials and workspace",
+                    "Apply first layers of paper mache for basic form",
+                    "Build up features gradually with additional layers",
+                    "Refine facial features and characteristic details",
+                    "Allow proper drying time between building sessions",
+                    "Sand and smooth surface preparation for painting",
+                    "Plan painting approach and color mixing",
+                    "Apply base colors with proper paint consistency",
+                    "Add details, shading, and final character-defining elements",
+                    "Photograph completed sculpture from multiple angles",
+                    "Document process and final piece for portfolio"
+                ],
+                skills: ["Character Design", "2D to 3D Translation", "Sculpture Construction", "Painting Techniques"],
+                assessment: "Character Head (100pts) + Design Development (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Paper Mache Techniques", url: "#", icon: "🎥"},
+                    {type: "video", title: "Armature Construction", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "3D Character Gallery", url: "#", icon: "🖼️"}
+                ]
+            },
+            {
+                number: 6,
+                title: "Soft Sculptures",
+                duration: "4 class periods",
+                prompt: "Transform a meaningful story into textile art",
+                category: ["sculpture", "mixed-media"],
+                project: "Story Quilts to 3D Forms",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Choose a story with personal significance and visual potential",
+                    "Identify key narrative elements that can be represented visually",
+                    "Plan how textile techniques can enhance storytelling",
+                    "Gather appropriate fabric materials and colors",
+                    "Learn basic hand-stitching techniques and thread handling",
+                    "Practice various stitching methods for different effects",
+                    "Create small test samples to refine technique",
+                    "Plan composition layout for story quilt foundation",
+                    "Cut fabric pieces according to design plan",
+                    "Begin stitching story elements onto base fabric",
+                    "Develop consistent stitching rhythm and tension",
+                    "Add details and narrative elements through stitching",
+                    "Consider how 2D elements can suggest 3D possibilities",
+                    "Plan transformation strategy from flat to dimensional",
+                    "Identify areas that can be stuffed or built up",
+                    "Experiment with different stuffing materials and techniques",
+                    "Begin adding dimensional elements to selected areas",
+                    "Build up 3D forms while maintaining story coherence",
+                    "Integrate 2D and 3D elements for unified composition",
+                    "Refine balance between flat and dimensional areas",
+                    "Complete final integrated soft sculpture",
+                    "Document transformation process and final piece"
+                ],
+                skills: ["Textile Arts", "Hand-Stitching", "Narrative Through Fiber", "2D to 3D Evolution"],
+                assessment: "Soft Sculpture (100pts) + Textile Research (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Hand-Stitching Techniques", url: "#", icon: "🎥"},
+                    {type: "exemplar", title: "Textile Art Examples", url: "#", icon: "🖼️"},
+                    {type: "reference", title: "Fiber Art History", url: "#", icon: "📚"}
+                ]
+            },
+            {
+                number: 7,
+                title: "Professional Practice",
+                duration: "4 class periods",
+                prompt: "Present your artistic growth professionally",
+                category: ["digital"],
+                project: "Portfolio + Exhibition",
+                projectBrief: "#", // Link to project brief PDF
+                steps: [
+                    "Review all work created throughout the course",
+                    "Identify strongest pieces that show growth and skill",
+                    "Consider how pieces work together as a cohesive body",
+                    "Select final portfolio pieces with intentional curation",
+                    "Write artist statement reflecting on your artistic journey",
+                    "Learn professional photography techniques for artwork",
+                    "Set up proper lighting for photographing 2D work",
+                    "Master techniques for photographing 3D sculptures",
+                    "Edit photos for accurate color and professional presentation",
+                    "Organize digital files with clear naming system",
+                    "Research exhibition design principles and layout options",
+                    "Plan physical exhibition space with attention to flow",
+                    "Consider how pieces relate to each other spatially",
+                    "Design wall labels and informational materials",
+                    "Practice presenting and discussing your work verbally",
+                    "Prepare answers for common questions about your process",
+                    "Set up exhibition with professional presentation standards",
+                    "Execute final presentation to audience",
+                    "Reflect on artistic growth and identify next steps",
+                    "Research post-graduation opportunities in art fields"
+                ],
+                skills: ["Portfolio Curation", "Professional Presentation", "Exhibition Design", "Artist Communication"],
+                assessment: "Portfolio & Exhibition (100pts) + Professional Skills (50pts)",
+                resources: [
+                    {type: "brief", title: "Project Brief PDF", url: "#", icon: "📄"},
+                    {type: "video", title: "Portfolio Photography", url: "#", icon: "🎥"},
+                    {type: "guide", title: "Artist Statement Writing", url: "#", icon: "📋"},
+                    {type: "template", title: "Digital Portfolio Templates", url: "#", icon: "💻"}
+                ]
+            }
+        ];
+
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const unitsGrid = document.getElementById('unitsGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderUnits(unitsData);
+            setupEventListeners();
+        });
+
+        function renderUnits(units) {
+            unitsGrid.innerHTML = '';
+            units.forEach(unit => {
+                const unitCard = createUnitCard(unit);
+                unitsGrid.appendChild(unitCard);
+            });
+        }
+
+        function createUnitCard(unit) {
+            const card = document.createElement('div');
+            card.className = 'unit-card expandable';
+            card.dataset.categories = unit.category.join(' ');
+            
+            card.innerHTML = `
+                <div class="unit-header">
+                    <div class="unit-number">${unit.number}</div>
+                    <div>
+                        <div class="unit-title">${unit.title}</div>
+                    </div>
+                    <div class="unit-duration">${unit.duration}</div>
+                    <div class="expand-icon">▼</div>
+                </div>
+                <div class="unit-prompt">${unit.prompt}</div>
+                <div><strong>Major Project:</strong> ${unit.project}</div>
+                
+                <div class="unit-details">
+                    <div class="week-breakdown">
+                        <h4>Process Steps:</h4>
+                        ${unit.steps.map((step, index) => `<div class="week-item"><strong>Step ${index + 1}:</strong> ${step}</div>`).join('')}
+                    </div>
+                    
+                    <div class="skills-tags">
+                        ${unit.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                    
+                    <div><strong>Assessment:</strong> ${unit.assessment}</div>
+                    
+                    <div class="resources-section">
+                        <h4>📁 Resources & Materials:</h4>
+                        ${unit.resources.map(resource => `
+                            <div class="resource-item">
+                                <span class="resource-icon">${resource.icon}</span>
+                                <a href="${resource.url}" class="resource-link">${resource.title}</a>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Add click handler for expansion
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('.resource-link')) return;
+                
+                const details = card.querySelector('.unit-details');
+                const icon = card.querySelector('.expand-icon');
+                
+                details.classList.toggle('expanded');
+                card.classList.toggle('expanded');
+            });
+
+            return card;
+        }
+
+        function setupEventListeners() {
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filterUnits(searchTerm, getActiveFilter());
+            });
+
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    const searchTerm = searchInput.value.toLowerCase();
+                    filterUnits(searchTerm, filter);
+                });
+            });
+
+            // Tab switching
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.dataset.tab;
+                    
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        }
+
+        function filterUnits(searchTerm, categoryFilter) {
+            let filteredUnits = unitsData;
+
+            // Filter by category
+            if (categoryFilter !== 'all') {
+                filteredUnits = filteredUnits.filter(unit => 
+                    unit.category.includes(categoryFilter)
+                );
+            }
+
+            // Filter by search term
+            if (searchTerm) {
+                filteredUnits = filteredUnits.filter(unit => 
+                    unit.title.toLowerCase().includes(searchTerm) ||
+                    unit.prompt.toLowerCase().includes(searchTerm) ||
+                    unit.project.toLowerCase().includes(searchTerm) ||
+                    unit.skills.some(skill => skill.toLowerCase().includes(searchTerm)) ||
+                    unit.steps.some(step => step.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            renderUnits(filteredUnits);
+        }
+
+        function getActiveFilter() {
+            const activeBtn = document.querySelector('.filter-btn.active');
+            return activeBtn ? activeBtn.dataset.filter : 'all';
+        }
+    </script>
+</body>
+</html>
