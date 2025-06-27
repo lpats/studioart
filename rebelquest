@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Punk & Rebellion Research Quest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            color: #000;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            border: 3px solid #ff006e;
+            padding: 25px;
+            margin-bottom: 25px;
+            transform: rotate(-1deg);
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+            text-align: center;
+            position: relative;
+        }
+        
+        header::before {
+            content: "RESEARCH";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: #ff006e;
+            color: #000;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            transform: rotate(15deg);
+        }
+        
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px #ff006e;
+        }
+        
+        .subtitle {
+            color: #ffbe0b;
+            font-size: 1em;
+            text-transform: uppercase;
+        }
+        
+        .mission-statement {
+            background: rgba(255, 190, 11, 0.95);
+            color: #000;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #000;
+            transform: rotate(0.5deg);
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+        }
+        
+        .research-phase {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #000;
+            padding: 20px;
+            margin-bottom: 20px;
+            transform: rotate(-0.3deg);
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .research-phase:nth-child(even) {
+            transform: rotate(0.3deg);
+        }
+        
+        .research-phase:hover {
+            transform: rotate(0deg) scale(1.01);
+            box-shadow: 8px 8px 0px rgba(255, 0, 110, 0.4);
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .phase-icon {
+            background: #000;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            margin-right: 15px;
+            border: 2px solid #ff006e;
+            transform: rotate(45deg);
+        }
+        
+        .phase-icon span {
+            transform: rotate(-45deg);
+        }
+        
+        .phase-title {
+            color: #000;
+            font-size: 1.4em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .research-question {
+            background: rgba(131, 56, 236, 0.9);
+            color: #fff;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #ff006e;
+            font-weight: bold;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .punk-link {
+            display: block;
+            background: #000;
+            color: #fff;
+            padding: 10px 15px;
+            text-decoration: none;
+            border: 2px solid #ff006e;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .punk-link:hover {
+            background: #ff006e;
+            color: #000;
+            transform: scale(1.05);
+        }
+        
+        .slideshow-connector {
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #ffbe0b;
+            text-align: center;
+            position: relative;
+        }
+        
+        .slideshow-connector::before {
+            content: "→ FOR YOUR SLIDESHOW ←";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffbe0b;
+            color: #000;
+            padding: 3px 12px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+        
+        .completion-tracker {
+            position: sticky;
+            top: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 10px;
+            border: 2px solid #ff006e;
+            margin: 15px 0;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #333;
+            border: 1px solid #ff006e;
+            margin: 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #ffbe0b);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .research-checklist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .research-checklist li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .research-checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 1.1em;
+            color: #ff006e;
+        }
+        
+        .research-checklist li.completed::before {
+            content: "☑";
+            color: #ff006e;
+        }
+        
+        .research-checklist li:hover {
+            padding-left: 30px;
+            color: #8338ec;
+        }
+        
+        .reflection-questions {
+            background: rgba(58, 134, 255, 0.1);
+            padding: 15px;
+            border-left: 4px solid #3a86ff;
+            margin: 10px 0;
+        }
+        
+        .reflection-questions h4 {
+            color: #8338ec;
+            margin-bottom: 8px;
+        }
+        
+        .reflection-questions ul {
+            margin-left: 20px;
+        }
+        
+        .reflection-questions li {
+            margin: 5px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NYC Punk & Rebellion</h1>
+            <p class="subtitle">Research Quest</p>
+        </header>
+
+        <div class="mission-statement">
+            <h3>Your Mission</h3>
+            <p>Research the historical and cultural forces behind NYC's punk movement to inform your rebellion poster project. This isn't just background info—it's the foundation for making authentic art that connects to a powerful tradition of creative rebellion.</p>
+        </div>
+
+        <div class="completion-tracker">
+            <strong>Research Progress</strong>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="progressText">0% Complete</span>
+        </div>
+
+        <div class="research-phase">
+            <div class="phase-header">
+                <div class="phase-icon"><span>🏭</span></div>
+                <div class="phase-title">Chester Carlson's Xerox Revolution</div>
+            </div>
+            
+            <div class="research-question">
+                <strong>Key Question:</strong> How did a Queens inventor accidentally create a tool of artistic rebellion?
+            </div>
+
+            <div class="resource-grid">
+                <a href="https://www.britannica.com/biography/Chester-F-Carlson" class="punk-link" target="_blank">Britannica Biography</a>
+                <a href="https://www.xerox.com/en-us/innovation/insights/chester-carlson-xerography" class="punk-link" target="_blank">Xerox Company History</a>
+                <a href="https://www.invent.org/inductees/chester-f-carlson" class="punk-link" target="_blank">Inventors Hall of Fame</a>
+                <a href="https://www.smithsonianmag.com/innovation/making-copies-2242822/" class="punk-link" target="_blank">Smithsonian Article</a>
+            </div>
+
+            <div class="slideshow-connector">
+                <strong>For Your Slideshow:</strong> How will xerography as a "democratic" copying process connect to your rebellion poster concept?
+            </div>
+
+            <ul class="research-checklist">
+                <li onclick="toggleTask(this)">Research Chester Carlson's background and motivation</li>
+                <li onclick="toggleTask(this)">Understand how xerography changed art reproduction</li>
+                <li onclick="toggleTask(this)">Connect his Queens lab to punk's DIY ethic</li>
+                <li onclick="toggleTask(this)">Find examples of early xerographic art</li>
+            </ul>
+        </div>
+
+        <div class="research-phase">
+            <div class="phase-header">
+                <div class="phase-icon"><span>🏙️</span></div>
+                <div class="phase-title">NYC 1970s: Crisis Breeds Creativity</div>
+            </div>
+            
+            <div class="research-question">
+                <strong>Key Question:</strong> How did New York's urban decay and fiscal crisis create perfect conditions for punk?
+            </div>
+
+            <div class="resource-grid">
+                <a href="https://www.pbs.org/wgbh/americanexperience/features/blackout-gallery/" class="punk-link" target="_blank">PBS: NYC in Chaos</a>
+                <a href="https://en.wikipedia.org/wiki/History_of_New_York_City_(1946%E2%80%931977)" class="punk-link" target="_blank">NYC History 1970s</a>
+                <a href="https://www.newyorkfed.org/newsevents/speeches/2016/dud161019" class="punk-link" target="_blank">Federal Reserve: Fiscal Crisis</a>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Think About:</h4>
+                <ul>
+                    <li>What did NYC look like during the fiscal crisis?</li>
+                    <li>How did economic hardship influence artistic expression?</li>
+                    <li>Why did authentic rebellion emerge from this chaos?</li>
+                </ul>
+            </div>
+
+            <ul class="research-checklist">
+                <li onclick="toggleTask(this)">Study 1970s NYC urban decay photographs</li>
+                <li onclick="toggleTask(this)">Research the 1975 fiscal crisis effects</li>
+                <li onclick="toggleTask(this)">Analyze how economic conditions shaped punk aesthetics</li>
+            </ul>
+        </div>
+
+        <div class="research-phase">
+            <div class="phase-header">
+                <div class="phase-icon"><span>🎵</span></div>
+                <div class="phase-title">CBGB & The Bowery Scene</div>
+            </div>
+            
+            <div class="research-question">
+                <strong>Key Question:</strong> How did a small club become the epicenter of American punk rock?
+            </div>
+
+            <div class="resource-grid">
+                <a href="https://www.cbgb.com/history-by-hilly" class="punk-link" target="_blank">CBGB History by Hilly</a>
+                <a href="https://teachrock.org/chapter/punk-rock/" class="punk-link" target="_blank">TeachRock: Punk Lesson</a>
+                <a href="https://www.villagepreservation.org/2024/08/16/the-beginnings-of-punk-in-the-east-village-how-the-ramones-came-to-cbgb/" class="punk-link" target="_blank">Ramones at CBGB</a>
+                <a href="https://en.wikipedia.org/wiki/CBGB" class="punk-link" target="_blank">CBGB Wikipedia</a>
+            </div>
+
+            <div class="slideshow-connector">
+                <strong>For Your Slideshow:</strong> How do CBGB's "DIY rules" (move your own equipment, play original songs) connect to authentic expression?
+            </div>
+
+            <ul class="research-checklist">
+                <li onclick="toggleTask(this)">Learn about Hilly Kristal and CBGB's founding</li>
+                <li onclick="toggleTask(this)">Research key bands: Ramones, Television, Patti Smith</li>
+                <li onclick="toggleTask(this)">Understand the Bowery neighborhood context</li>
+                <li onclick="toggleTask(this)">Analyze CBGB's role in launching punk careers</li>
+            </ul>
+        </div>
+
+        <div class="research-phase">
+            <div class="phase-header">
+                <div class="phase-icon"><span>🔍</span></div>
+                <div class="phase-title">Authentic vs. Performative Rebellion</div>
+            </div>
+            
+            <div class="research-question">
+                <strong>Key Question:</strong> What makes rebellion genuine social critique versus just shock value?
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Critical Analysis:</h4>
+                <ul>
+                    <li>What issues authentically mattered to 1970s youth?</li>
+                    <li>How did punk address problems without just complaining?</li>
+                    <li>What's the difference between rebellion and mere opposition?</li>
+                    <li>What contemporary issues connect to punk's original concerns?</li>
+                </ul>
+            </div>
+
+            <div class="slideshow-connector">
+                <strong>For Your Slideshow:</strong> Define YOUR authentic rebellion topic and explain why it's genuine rather than performative.
+            </div>
+
+            <ul class="research-checklist">
+                <li onclick="toggleTask(this)">Identify what made punk rebellion "authentic"</li>
+                <li onclick="toggleTask(this)">Research contemporary issues that connect to punk values</li>
+                <li onclick="toggleTask(this)">Analyze examples of authentic vs. performative rebellion</li>
+                <li onclick="toggleTask(this)">Choose your own authentic rebellion topic</li>
+            </ul>
+        </div>
+
+        <div class="research-phase">
+            <div class="phase-header">
+                <div class="phase-icon"><span>📝</span></div>
+                <div class="phase-title">Synthesis & Application</div>
+            </div>
+
+            <div class="reflection-questions">
+                <h4>Connect Everything:</h4>
+                <ul>
+                    <li>How does Chester Carlson's story relate to your creative process?</li>
+                    <li>What aspects of 1970s NYC chaos connect to today's challenges?</li>
+                    <li>How will you use xerography as an artistic tool, not just reproduction?</li>
+                    <li>What makes YOUR rebellion poster authentic to your generation?</li>
+                </ul>
+            </div>
+
+            <div class="slideshow-connector">
+                <strong>Ready for Your Project!</strong> You now have the context to create a meaningful rebellion poster and document your process in your slideshow with historical depth and personal authenticity.
+            </div>
+
+            <ul class="research-checklist">
+                <li onclick="toggleTask(this)">Complete all research phases above</li>
+                <li onclick="toggleTask(this)">Plan research slides for your project slideshow</li>
+                <li onclick="toggleTask(this)">Connect historical context to your artistic choices</li>
+                <li onclick="toggleTask(this)">Write reflection on authentic rebellion in your generation</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let completedTasks = 0;
+        const totalTasks = document.querySelectorAll('.research-checklist li').length;
+
+        function toggleTask(element) {
+            if (element.classList.contains('completed')) {
+                element.classList.remove('completed');
+                completedTasks--;
+            } else {
+                element.classList.add('completed');
+                completedTasks++;
+            }
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (completedTasks / totalTasks) * 100;
+            
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '% Complete';
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
