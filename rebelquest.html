@@ -379,6 +379,67 @@
             font-weight: bold;
             text-transform: uppercase;
         }
+
+        .generator-templates {
+            margin: 20px 0;
+        }
+
+        .template-row {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #000;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .slogan-input {
+            background: #ffbe0b;
+            border: 2px solid #000;
+            padding: 5px 10px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 5px;
+            min-width: 120px;
+            max-width: 150px;
+        }
+
+        .slogan-input:focus {
+            outline: none;
+            background: #ff006e;
+            color: #fff;
+        }
+
+        .generated-slogan {
+            background: #000;
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0 0 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            border: 2px solid #ff006e;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .generator-tips {
+            background: rgba(131, 56, 236, 0.1);
+            border: 2px dashed #8338ec;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .generator-tips h5 {
+            color: #8338ec;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -626,6 +687,61 @@
                             <li>Will it work visually in xerographic black & white?</li>
                         </ul>
                     </div>
+
+                    <div class="slogan-generator" style="border: 3px solid #ff006e; background: rgba(255, 0, 110, 0.05);">
+                        <h4>🎯 Interactive Slogan Generator</h4>
+                        <p style="margin-bottom: 15px;"><strong>Try different punk slogan structures with YOUR rebellion topic!</strong></p>
+                        
+                        <div class="generator-templates">
+                            <div class="template-row">
+                                <strong>Template 1:</strong> NO MORE 
+                                <input type="text" placeholder="your issue here" class="slogan-input" id="input1" oninput="updateSlogan(1)"> !
+                                <div class="generated-slogan" id="result1">NO MORE [your issue] !</div>
+                            </div>
+                            
+                            <div class="template-row">
+                                <strong>Template 2:</strong> 
+                                <input type="text" placeholder="action verb" class="slogan-input" id="input2a" oninput="updateSlogan(2)"> THE 
+                                <input type="text" placeholder="system/thing" class="slogan-input" id="input2b" oninput="updateSlogan(2)">
+                                <div class="generated-slogan" id="result2">[action] THE [system] </div>
+                            </div>
+                            
+                            <div class="template-row">
+                                <strong>Template 3:</strong> 
+                                <input type="text" placeholder="your cause" class="slogan-input" id="input3" oninput="updateSlogan(3)"> NOT PROFIT
+                                <div class="generated-slogan" id="result3">[your cause] NOT PROFIT</div>
+                            </div>
+                            
+                            <div class="template-row">
+                                <strong>Template 4:</strong> QUESTION 
+                                <input type="text" placeholder="what to question" class="slogan-input" id="input4" oninput="updateSlogan(4)">
+                                <div class="generated-slogan" id="result4">QUESTION [what to question]</div>
+                            </div>
+                            
+                            <div class="template-row">
+                                <strong>Template 5:</strong> 
+                                <input type="text" placeholder="your topic" class="slogan-input" id="input5a" oninput="updateSlogan(5)"> IS 
+                                <input type="text" placeholder="description" class="slogan-input" id="input5b" oninput="updateSlogan(5)">
+                                <div class="generated-slogan" id="result5">[your topic] IS [description]</div>
+                            </div>
+                            
+                            <div class="template-row">
+                                <strong>Template 6:</strong> REAL 
+                                <input type="text" placeholder="your value" class="slogan-input" id="input6" oninput="updateSlogan(6)"> OVER FAKE
+                                <div class="generated-slogan" id="result6">REAL [your value] OVER FAKE</div>
+                            </div>
+                        </div>
+                        
+                        <div class="generator-tips">
+                            <h5>Generator Tips:</h5>
+                            <ul style="margin-left: 20px; font-size: 0.9em;">
+                                <li>Keep words short and punchy</li>
+                                <li>Use strong action verbs (FIGHT, BREAK, STOP, CREATE)</li>
+                                <li>Think about what you want to change or challenge</li>
+                                <li>Test how it sounds when you say it out loud</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="slideshow-connector">
@@ -666,6 +782,55 @@
                     <li onclick="toggleTask(this)" data-part="2">Finalize rebellion topic and slogan</li>
                     <li onclick="toggleTask(this)" data-part="2">Plan slideshow presentation structure</li>
                     <li onclick="toggleTask(this)" data-part="2">Prepare to begin poster creation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SUBMISSION SECTION -->
+        <div class="part-header" style="margin-top: 40px;">
+            <h2>Submit Your Research & Rebellion Topic</h2>
+            <p>Ready to share your findings? Submit your name and rebellion topic below!</p>
+        </div>
+
+        <div class="research-phase" style="transform: rotate(0deg);">
+            <div class="phase-header">
+                <div class="phase-icon"><span>📋</span></div>
+                <div class="phase-title">Project Submission Form</div>
+            </div>
+            
+            <div class="slideshow-connector">
+                <strong>Before You Submit:</strong> Make sure you've completed your research and chosen your authentic rebellion topic and slogan!
+            </div>
+
+            <div class="form-container" style="background: rgba(255, 255, 255, 0.95); padding: 20px; border: 2px solid #000; margin: 20px 0;">
+                <!-- Embedded Google Form -->
+                <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSdNqFZejlhkSLoaYVHslNCMWeZhfMgNwzJYiOQbNm3bS4xAgw/viewform?embedded=true" 
+                    width="100%" 
+                    height="600" 
+                    frameborder="0" 
+                    marginheight="0" 
+                    marginwidth="0"
+                    style="border: 2px solid #ff006e;">
+                    Loading form...
+                </iframe>
+                
+                <!-- Fallback link if iframe doesn't work -->
+                <div style="text-align: center; margin-top: 15px;">
+                    <p><strong>Form not loading?</strong></p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdNqFZejlhkSLoaYVHslNCMWeZhfMgNwzJYiOQbNm3bS4xAgw/viewform?usp=dialog" class="punk-link" target="_blank" style="display: inline-block; margin: 10px;">
+                        Open Form in New Tab
+                    </a>
+                </div>
+            </div>
+
+            <div class="rebellion-helper">
+                <h4>What to Include in Your Submission:</h4>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Your Name:</strong> So I can track your progress</li>
+                    <li><strong>Rebellion Topic:</strong> The authentic issue you chose to address</li>
+                    <li><strong>Your Slogan:</strong> The punk slogan you created</li>
+                    <li><strong>Brief Explanation:</strong> Why this topic matters to your generation</li>
                 </ul>
             </div>
         </div>
@@ -733,6 +898,48 @@
             
             // Smooth scroll to Part 2
             part2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateSlogan(templateNum) {
+            let result = '';
+            let resultElement = document.getElementById('result' + templateNum);
+            
+            switch(templateNum) {
+                case 1:
+                    const input1 = document.getElementById('input1').value.toUpperCase() || '[YOUR ISSUE]';
+                    result = `NO MORE ${input1} !`;
+                    break;
+                case 2:
+                    const input2a = document.getElementById('input2a').value.toUpperCase() || '[ACTION]';
+                    const input2b = document.getElementById('input2b').value.toUpperCase() || '[SYSTEM]';
+                    result = `${input2a} THE ${input2b}`;
+                    break;
+                case 3:
+                    const input3 = document.getElementById('input3').value.toUpperCase() || '[YOUR CAUSE]';
+                    result = `${input3} NOT PROFIT`;
+                    break;
+                case 4:
+                    const input4 = document.getElementById('input4').value.toUpperCase() || '[WHAT TO QUESTION]';
+                    result = `QUESTION ${input4}`;
+                    break;
+                case 5:
+                    const input5a = document.getElementById('input5a').value.toUpperCase() || '[YOUR TOPIC]';
+                    const input5b = document.getElementById('input5b').value.toUpperCase() || '[DESCRIPTION]';
+                    result = `${input5a} IS ${input5b}`;
+                    break;
+                case 6:
+                    const input6 = document.getElementById('input6').value.toUpperCase() || '[YOUR VALUE]';
+                    result = `REAL ${input6} OVER FAKE`;
+                    break;
+            }
+            
+            resultElement.textContent = result;
+            
+            // Add a little animation when updating
+            resultElement.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 200);
         }
 
         // Initialize progress
